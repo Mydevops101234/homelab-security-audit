@@ -45,7 +45,7 @@ flowchart TB
 flowchart TB
     subgraph internet["Public Internet"]
         client(("Any host"))
-        tebex_sass["Third-party webhook sender\n(legitimate caller)"]
+        webhook_sender["Third-party webhook sender\n(legitimate caller)"]
     end
 
     subgraph lan["LAN only (<LAN_IP>)"]
@@ -72,7 +72,7 @@ flowchart TB
     client -. "blocked" .-> dash
     client -. "blocked" .-> metrics
     client -. "blocked" .-> game
-    tebex_sass ==> webhook
+    webhook_sender ==> webhook
     webhook -- "internal network,\nby service name" --> rcon
     lanclient --> dns
     lanclient --> dash
