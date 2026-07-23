@@ -1,0 +1,18 @@
+# Example only — values are placeholders. Pin the image digest to
+# whatever is actually running on your host:
+#   docker inspect --format '{{join .RepoDigests ", "}}' pihole/pihole:latest
+services:
+  pihole:
+    image: pihole/pihole@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: pihole
+    ports:
+      - "${LAN_IP}:53:53/tcp"
+      - "${LAN_IP}:53:53/udp"
+      - "${LAN_IP}:80:80/tcp"
+    environment:
+      TZ: '${TZ}'
+      WEBPASSWORD: '${PIHOLE_WEBPASSWORD}'
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped

@@ -1,0 +1,32 @@
+# Example only. RCON is deliberately NOT published to the host at all —
+# see docs/02-findings-report.md finding F5. The webhook-receiver service
+# reaches it over the shared internal `integration_net` Docker network by
+# container hostname instead.
+services:
+  game-server:
+    image: itzg/minecraft-server@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: game-server
+    ports:
+      # Game port is intentionally public — players need to connect.
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      MEMORY: 2G
+      ENABLE_RCON: "true"
+      RCON_PORT: 25575
+      RCON_PASSWORD: '${RCON_PASSWORD}'
+    volumes:
+      - game_data:/data
+    networks:
+      - game_net
+      - integration_net
+    restart: unless-stopped
+
+networks:
+  game_net:
+    external: true
+  integration_net:
+    external: true
+
+volumes:
+  game_data:

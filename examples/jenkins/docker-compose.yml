@@ -1,0 +1,15 @@
+# Example only. Also mounts the Docker socket — same F9 trade-off as
+# the portainer example.
+services:
+  jenkins:
+    image: jenkins/jenkins@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: jenkins
+    ports:
+      - "${LAN_IP}:8080:8080"
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+volumes:
+  jenkins_data:

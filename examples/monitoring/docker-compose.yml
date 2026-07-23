@@ -1,0 +1,57 @@
+# Example only — values are placeholders. Pin image digests to whatever
+# is actually running on your host:
+#   docker inspect --format '{{join .RepoDigests ", "}}' <image>
+services:
+  prometheus:
+    image: prom/prometheus@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: prometheus
+    # Host-local only: Grafana reaches this over the internal Docker
+    # network by service name, so it never needs a LAN/internet binding.
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  node-exporter:
+    image: prom/node-exporter@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: node-exporter
+    ports:
+      - "127.0.0.1:9100:9100"
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: cadvisor
+    ports:
+      - "127.0.0.1:8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    # cAdvisor genuinely needs broad host read access to report per-container
+    # metrics — this is the documented way to run it, not a shortcut. The
+    # trade-off is contained by keeping its port host-local only.
+    privileged: true
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: grafana
+    # LAN-only: a specific IPv4 literal, never the 0.0.0.0/[::] wildcard —
+    # this is what actually closes the IPv6 dual-stack exposure gap
+    # described in docs/02-findings-report.md (F4).
+    ports:
+      - "${LAN_IP}:3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_ADMIN_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+volumes:
+  grafana_data:

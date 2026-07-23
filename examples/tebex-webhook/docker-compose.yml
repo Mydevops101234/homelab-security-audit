@@ -1,0 +1,25 @@
+# Example only. This service intentionally stays bound to 0.0.0.0 — it's
+# a webhook receiver that a third-party SaaS platform must be able to
+# reach from the internet. That's fine *because* every request is
+# independently authenticated (HMAC-SHA256 signature check) before any
+# payload is trusted — see docs/02-findings-report.md and
+# docs/03-remediation.md for why this is the one exception to
+# "restrict everything."
+services:
+  webhook-receiver:
+    build: .
+    container_name: webhook-receiver
+    ports:
+      - "3001:3001"
+    environment:
+      WEBHOOK_SECRET: '${WEBHOOK_SECRET}'
+      RCON_HOST: game-server
+      RCON_PORT: 25575
+      RCON_PASSWORD: '${RCON_PASSWORD}'
+    networks:
+      - integration_net
+    restart: unless-stopped
+
+networks:
+  integration_net:
+    external: true

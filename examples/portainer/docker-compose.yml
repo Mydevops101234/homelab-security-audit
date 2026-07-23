@@ -1,0 +1,17 @@
+# Example only. Mounts the Docker socket — see docs/02-findings-report.md
+# finding F9: this is inherent to what the tool does (functionally
+# root-equivalent host access), not something fixable in compose. The
+# mitigation is restricting who can reach the UI at all.
+services:
+  portainer:
+    image: portainer/portainer-ce@sha256:REPLACE_WITH_CURRENT_DIGEST
+    container_name: portainer
+    ports:
+      - "${LAN_IP}:9443:9443"
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+volumes:
+  portainer_data:
