@@ -12,7 +12,7 @@ placeholders; the vulnerability classes, root causes, and fixes are real.
 
 ## Skills demonstrated
 
-- **Exposure analysis**: enum what's actually reachable and from
+- **Exposure analysis**: enumerating what's actually reachable and from
   where - including a dual-stack IPv4/IPv6 blind spot where several
   services were reachable from the public internet over IPv6 despite
   being "protected" by IPv4 NAT.
