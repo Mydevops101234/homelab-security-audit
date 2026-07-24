@@ -5,7 +5,7 @@ on my personal homelab: a Docker host running DNS filtering, a monitoring
 stack, a CI server, a container-management platform, and a game server
 integrated with a third-party webhook.
 
-This isn't a synthetic lab exercise — it's the actual process I used to
+This isn't a synthetic lab exercise - it's the actual process I used to
 find, prioritize, and fix real misconfigurations on infrastructure I run
 day to day. All IPs, hostnames, and credentials in this repo are sanitized
 placeholders; the vulnerability classes, root causes, and fixes are real.
