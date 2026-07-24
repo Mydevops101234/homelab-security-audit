@@ -12,8 +12,8 @@ placeholders; the vulnerability classes, root causes, and fixes are real.
 
 ## Skills demonstrated
 
-- **Exposure analysis**: enumerating what's actually reachable and from
-  where — including a dual-stack IPv4/IPv6 blind spot where several
+- **Exposure analysis**: enum what's actually reachable and from
+  where - including a dual-stack IPv4/IPv6 blind spot where several
   services were reachable from the public internet over IPv6 despite
   being "protected" by IPv4 NAT.
 - **Credential hygiene**: finding placeholder/default credentials left in
@@ -49,5 +49,5 @@ placeholders; the vulnerability classes, root causes, and fixes are real.
 ./scripts/docker-security-audit.sh
 ```
 
-Read-only — it only runs `docker inspect`/`docker ps` against the local
+Read-only - it only runs `docker inspect`/`docker ps` against the local
 Docker daemon and prints findings. It doesn't modify anything.
